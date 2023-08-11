@@ -24,7 +24,7 @@ app.get("/api/movies/search", async (req, res) => {
     const tmdbResponse = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
         movieName
-      )}&year=${movieYear}`,
+      )}`,
       {
         // Include your TMDB API key in the request headers
         headers: {

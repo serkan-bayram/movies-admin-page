@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import InputSection from "./InputSection";
 import Button from "./Button";
+import Options from "./Options";
 
 const Form = (props) => {
   const [formValues, setFormValues] = useState({
     mName: "",
-    director: "",
-    year: "",
   });
+  const [data, setData] = useState({});
 
   const handleClick = async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/movies/search?movieName=${encodeURIComponent(
           formValues.mName
-        )}&movieYear=${formValues.year}`
+        )}` // Sending a request to our route in server
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        const responseData = await response.json();
+        setData(responseData);
       } else {
         console.error("Error searching for movies");
       }
@@ -29,10 +29,27 @@ const Form = (props) => {
 
   // Update formValues state when input values change
   const handleInputChange = (name, value) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
+    setFormValues({ [name]: value });
+  };
+
+  //dataOption selected button from 1 2 3
+  const showData = (dataOption) => {
+    const { results } = data; // data -> response from themoviedb
+    // -1 because we need the index but buttons say 1 2 3
+    try {
+      const selectedResult = results[dataOption - 1];
+      const {
+        // Results
+        original_title: Title,
+        poster_path: Poster,
+        overview: Description,
+        release_date: Year,
+      } = selectedResult;
+      setFormValues({ mName: Title }); // Show title
+      props.showPoster(Poster); // sending poster path to FindSection component
+    } catch {
+      console.log(`Option ${dataOption} could not find.`);
+    }
   };
 
   return (
@@ -43,19 +60,8 @@ const Form = (props) => {
         value={formValues.mName}
         onInputChange={handleInputChange}
       />
-      <InputSection
-        name="director"
-        label="Director"
-        value={formValues.director}
-        onInputChange={handleInputChange}
-      />
-      <InputSection
-        name="year"
-        label="Year"
-        value={formValues.year}
-        onInputChange={handleInputChange}
-      />
       <Button btnClicked={handleClick} />
+      <Options optionsClicked={showData} />
     </form>
   );
 };
