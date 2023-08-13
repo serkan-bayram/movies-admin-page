@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputSection from "./InputSection";
 import Button from "./Button";
 import Options from "./Options";
@@ -9,12 +9,12 @@ const Form = (props) => {
   });
   const [data, setData] = useState({});
 
-  const handleClick = async () => {
+  const fetchData = async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/movies/search?movieName=${encodeURIComponent(
           formValues.mName
-        )}` // Sending a request to our route in server
+        )}`
       );
       if (response.ok) {
         const responseData = await response.json();
@@ -25,6 +25,17 @@ const Form = (props) => {
     } catch (error) {
       console.error("Error searching for movies", error);
     }
+  };
+
+  useEffect(() => {
+    if (Object.keys(data).length > 0) {
+      // Show the first option once data is updated
+      showData("1");
+    }
+  }, [data]);
+
+  const handleClick = async () => {
+    await fetchData();
   };
 
   // Update formValues state when input values change
@@ -56,7 +67,7 @@ const Form = (props) => {
     <form className="w-full pt-6">
       <InputSection
         name="mName"
-        label="Movie name"
+        label="Movie Name"
         value={formValues.mName}
         onInputChange={handleInputChange}
       />

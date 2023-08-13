@@ -7,7 +7,7 @@ const Options = (props) => {
   };
 
   return (
-    <div className="w-full px-4 h-12 border-solid border-2 border-sky-500 mt-6 flex justify-center gap-4">
+    <div className="w-full px-4 h-12 mt-12 flex justify-center gap-4">
       <Option whichOptionClicked={handleClick} order="1" />
       <Option whichOptionClicked={handleClick} order="2" />
       <Option whichOptionClicked={handleClick} order="3" />
