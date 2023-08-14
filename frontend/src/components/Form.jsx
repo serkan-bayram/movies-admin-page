@@ -8,8 +8,12 @@ import Notifications from "./Notifications";
 const Form = (props) => {
   const [formValues, setFormValues] = useState({
     mName: "",
+    poster: "",
+    date: "",
   });
   const [data, setData] = useState({});
+
+  const [addBtn, setAddBtn] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -21,6 +25,7 @@ const Form = (props) => {
       if (response.ok) {
         const responseData = await response.json();
         setData(responseData);
+        setAddBtn(true);
       } else {
         console.error("Error searching for movies");
       }
@@ -75,14 +80,15 @@ const Form = (props) => {
         original_title: Title,
         poster_path: Poster,
         overview: Description,
-        release_date: Year,
+        release_date: Date,
       } = selectedResult;
-      setFormValues({ mName: Title }); // Show title
+      setFormValues({ mName: Title, poster: Poster, date: Date }); // Show title
       props.showPoster(Poster); // sending poster path to FindSection component
       if (!Poster) {
         // If there is no poster
         handleNotification("No poster has found.");
       }
+      setAddBtn(true);
     } catch {
       if (dataOption === "1") {
         handleNotification("No movie has found.");
@@ -90,6 +96,11 @@ const Form = (props) => {
         handleNotification(`Option ${dataOption} has not found.`);
       }
     }
+  };
+
+  const handleAddClick = () => {
+    props.handleAddClick(formValues);
+    setAddBtn(false);
   };
 
   return (
@@ -100,7 +111,8 @@ const Form = (props) => {
         value={formValues.mName}
         onInputChange={handleInputChange}
       />
-      <Button btnClicked={handleClick} />
+      <Button btnClicked={handleClick} content="Find" />
+      {addBtn && <Button btnClicked={handleAddClick} content="Add" />}
       <Options optionsClicked={showData} />
       <Notifications notifications={notifications} />
     </form>

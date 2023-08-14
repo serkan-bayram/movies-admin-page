@@ -17,9 +17,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/movies/search", async (req, res) => {
-  console.log(req.query);
   try {
-    const { movieName, movieYear } = req.query;
+    const { movieName } = req.query;
     // Make a request to TMDB API using axios
     const tmdbResponse = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
@@ -40,6 +39,9 @@ app.get("/api/movies/search", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
+// ToDo credits için bi route daha oluştur ordan gereken filmler için creditsleri çek frontenden
+// https://developer.themoviedb.org/reference/movie-credits
 
 // Start the server
 app.listen(port, () => {
