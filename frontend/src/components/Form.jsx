@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import InputSection from "./InputSection";
 import Button from "./Button";
 import Options from "./Options";
+import Notifications from "./Notifications";
 
 const Form = (props) => {
   const [formValues, setFormValues] = useState({
@@ -43,6 +45,25 @@ const Form = (props) => {
     setFormValues({ [name]: value });
   };
 
+  const [notifications, setNotifications] = useState([
+    {
+      id: "",
+      content: "",
+    },
+  ]);
+
+  const handleNotification = (notification) => {
+    setNotifications((prevValues) => {
+      return [
+        ...prevValues,
+        {
+          id: uuidv4(),
+          content: notification,
+        },
+      ];
+    });
+  };
+
   //dataOption selected button from 1 2 3
   const showData = (dataOption) => {
     const { results } = data; // data -> response from themoviedb
@@ -58,8 +79,16 @@ const Form = (props) => {
       } = selectedResult;
       setFormValues({ mName: Title }); // Show title
       props.showPoster(Poster); // sending poster path to FindSection component
+      if (!Poster) {
+        // If there is no poster
+        handleNotification("No poster has found.");
+      }
     } catch {
-      console.log(`Option ${dataOption} could not find.`);
+      if (dataOption === "1") {
+        handleNotification("No movie has found.");
+      } else {
+        handleNotification(`Option ${dataOption} has not found.`);
+      }
     }
   };
 
@@ -73,6 +102,7 @@ const Form = (props) => {
       />
       <Button btnClicked={handleClick} />
       <Options optionsClicked={showData} />
+      <Notifications notifications={notifications} />
     </form>
   );
 };

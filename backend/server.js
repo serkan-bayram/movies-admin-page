@@ -33,7 +33,6 @@ app.get("/api/movies/search", async (req, res) => {
       }
     );
 
-    console.log(tmdbResponse.data);
     // Process the TMDB response and send relevant data as JSON
     res.json(tmdbResponse.data);
   } catch (error) {

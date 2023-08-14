@@ -7,7 +7,6 @@ const FindSection = () => {
 
   const handleResponse = (posterPath) => {
     if (posterPath === null) {
-      console.log("No poster has found.");
       setPosterLink("null");
       return;
     }
