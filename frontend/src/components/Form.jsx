@@ -14,8 +14,6 @@ const Form = (props) => {
   });
   const [data, setData] = useState({});
 
-  const [credits, setCredits] = useState({});
-
   const [addBtn, setAddBtn] = useState(false);
 
   const fetchMovie = async () => {
@@ -86,9 +84,6 @@ const Form = (props) => {
         release_date: Date,
         id: Id,
       } = selectedResult;
-      const handleClick = async () => {
-        await fetchMovie();
-      };
       setFormValues({ mName: Title, poster: Poster, date: Date, mId: Id }); // Show title
       props.showPoster(Poster); // sending poster path to FindSection component
       if (!Poster) {
@@ -102,13 +97,14 @@ const Form = (props) => {
       } else {
         handleNotification(`Option ${dataOption} has not found.`);
       }
+      props.showPoster("null");
+      setAddBtn(false);
     }
   };
 
   const handleAddClick = async () => {
     const results = await fetchCredits();
     props.handleAddClick({ ...formValues, ...results });
-
     setAddBtn(false);
   };
 

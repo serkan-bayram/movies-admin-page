@@ -97,9 +97,6 @@ app.get("/api/movies/search", async (req, res) => {
   }
 });
 
-// ToDo credits için bi route daha oluştur ordan gereken filmler için creditsleri çek frontenden
-// https://developer.themoviedb.org/reference/movie-credits
-
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

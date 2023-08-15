@@ -9,18 +9,20 @@ const GallerySection = (props) => {
 
   useEffect(() => {
     setMovies((prevValues) => {
-      return [...prevValues, movieInfo];
+      const lastAdded = prevValues[Object.keys(prevValues).length - 1]; // We are checking is the
+      //last item same with new one because
+      //when we change anything in this component it re renders and add the last item again
+      if (lastAdded === movieInfo) {
+        return [...prevValues];
+      } else {
+        return [...prevValues, movieInfo];
+      }
     });
-  }, [movieInfo]); // Updating movies when movieInfo changes,
-  //this will also prevents adding the same entry twice if you click add button twice
-  //, but it will add anyway after you search for something else
+  }, [movieInfo]);
 
   //Filtering the empty entries
-
-  // TODO it adds same items when I change className (because whole gallerysection rerenders)
-
   return (
-    <div className="w-full h-screen flex flex-wrap p-8 gap-6 content-start overflow-y-scroll">
+    <div className="w-full h-screen pb-24 flex flex-wrap p-8 gap-6 content-start overflow-y-scroll">
       {movies
         .filter((movie) => {
           if (movie.mName !== undefined && movie.mName !== "") return movie;
