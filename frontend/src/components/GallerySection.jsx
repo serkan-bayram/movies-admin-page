@@ -4,6 +4,7 @@ import Movie from "./Movie";
 
 const GallerySection = (props) => {
   const { movieInfo } = props;
+
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -31,6 +32,8 @@ const GallerySection = (props) => {
               movieName={movie.mName}
               poster={movie.poster}
               releaseDate={movie.date}
+              acting={movie[0]}
+              directing={movie[1]}
             />
           );
         })}

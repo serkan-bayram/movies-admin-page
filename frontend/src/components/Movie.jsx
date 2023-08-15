@@ -25,6 +25,8 @@ const Movie = (props) => {
       <Information
         movieName={props.movieName}
         releaseDate={props.releaseDate}
+        acting={props.acting}
+        directing={props.directing}
         hover={hover}
       />
     </div>

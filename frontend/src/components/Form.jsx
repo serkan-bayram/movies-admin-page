@@ -10,12 +10,15 @@ const Form = (props) => {
     mName: "",
     poster: "",
     date: "",
+    mId: "",
   });
   const [data, setData] = useState({});
 
+  const [credits, setCredits] = useState({});
+
   const [addBtn, setAddBtn] = useState(false);
 
-  const fetchData = async () => {
+  const fetchMovie = async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/movies/search?movieName=${encodeURIComponent(
@@ -42,7 +45,7 @@ const Form = (props) => {
   }, [data]);
 
   const handleClick = async () => {
-    await fetchData();
+    await fetchMovie();
   };
 
   // Update formValues state when input values change
@@ -81,8 +84,12 @@ const Form = (props) => {
         poster_path: Poster,
         overview: Description,
         release_date: Date,
+        id: Id,
       } = selectedResult;
-      setFormValues({ mName: Title, poster: Poster, date: Date }); // Show title
+      const handleClick = async () => {
+        await fetchMovie();
+      };
+      setFormValues({ mName: Title, poster: Poster, date: Date, mId: Id }); // Show title
       props.showPoster(Poster); // sending poster path to FindSection component
       if (!Poster) {
         // If there is no poster
@@ -98,9 +105,29 @@ const Form = (props) => {
     }
   };
 
-  const handleAddClick = () => {
-    props.handleAddClick(formValues);
+  const handleAddClick = async () => {
+    const results = await fetchCredits();
+    props.handleAddClick({ ...formValues, ...results });
+
     setAddBtn(false);
+  };
+
+  const fetchCredits = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/movies/search?id=${encodeURIComponent(
+          formValues.mId
+        )}`
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        return responseData;
+      } else {
+        console.error("Error searching for credits");
+      }
+    } catch (error) {
+      console.error("Error searching for credits", error);
+    }
   };
 
   return (

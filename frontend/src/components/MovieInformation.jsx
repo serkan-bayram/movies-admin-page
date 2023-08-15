@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const MovieInformation = (props) => {
-  const defaultPadding = 1;
+  const defaultPadding = 0.5;
 
   const [information, setInformation] = useState(props.information);
   const [padding, setPadding] = useState(defaultPadding);
@@ -9,16 +9,16 @@ const MovieInformation = (props) => {
   const informationMap = {
     movieName: "Movie Name",
     releaseDate: "Release Date",
+    directorName: "Director",
+    actorName: props.character,
   };
 
   const handleMouseOver = () => {
     // Transition with padding
-    console.log(information.length);
-    console.log(props.content.length);
     if (information.length > props.content.length) {
-      setPadding(0.75);
+      setPadding(0.25);
     } else {
-      setPadding(1.5);
+      setPadding(1);
     }
     const newInformation = informationMap[props.content] || "";
     setInformation(newInformation);
@@ -26,7 +26,6 @@ const MovieInformation = (props) => {
 
   const handleMouseLeave = () => {
     setPadding(defaultPadding);
-
     setInformation(props.information);
   };
 
