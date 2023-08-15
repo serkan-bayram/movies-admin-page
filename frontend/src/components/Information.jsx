@@ -22,7 +22,7 @@ const Information = (props) => {
       />
       <MovieInformation
         theme="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-        information={(directing && directing[0]?.directorName) || "Unknown"}
+        information={directing[0].directorName}
         content="directorName"
         hover={hover}
       />
@@ -33,9 +33,9 @@ const Information = (props) => {
             <MovieInformation
               key={uuidv4()}
               theme="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
-              information={actorName || "Unknown"}
+              information={actorName}
               content="actorName"
-              character={character || "Unknown"}
+              character={character}
               hover={hover}
             />
           );

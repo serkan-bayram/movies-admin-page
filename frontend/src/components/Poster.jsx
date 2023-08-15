@@ -21,7 +21,7 @@ const Poster = (props) => {
       className={`bg-white  bg-cover bg-no-repeat rounded-md border border-slate-600  ${
         props.type === "main"
           ? "w-2/3 h-96  mx-auto transition-all duration-200 border-slate-600  shadow-2xl"
-          : "w-40 h-56 shadow"
+          : "w-36 h-56  shadow"
       }`}
       style={posterStyle}
     ></div>

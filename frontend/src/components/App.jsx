@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FindSection from "./FindSection";
 import GallerySection from "./GallerySection";
 
