@@ -25,6 +25,8 @@ const Form = (props) => {
     },
   ]);
 
+  const [inputFocused, setInputFocused] = useState(false);
+
   const handleNotification = (notification) => {
     setNotifications((prevValues) => {
       return [
@@ -36,6 +38,21 @@ const Form = (props) => {
       ];
     });
   };
+
+  useEffect(() => {
+    const keyPressed = props.keyPressed;
+    if (!inputFocused) {
+      if (keyPressed === "f") handleFindClick();
+      if (keyPressed === "a" && addBtn) handleAddClick();
+    }
+  }, [props.isKeyPressed]);
+
+  useEffect(() => {
+    const message = props.movieDeleted;
+    if (message.length > 0) {
+      handleNotification(`${message}`);
+    }
+  }, [props.movieDeleted]);
 
   const convertDateFormat = (inputDate) => {
     // Split the input date into year, month, and day
@@ -136,10 +153,6 @@ const Form = (props) => {
         "credits"
       );
 
-      // optimistic rendering
-      props.handleAddClick({ ...formValues, ...results });
-      setAddBtn(false);
-
       const [acting, directing] = results;
       const { directorName } = directing[0];
 
@@ -162,10 +175,23 @@ const Form = (props) => {
         posterPath: poster,
       };
 
-      await axios.post("http://localhost:5000/api/movies/", postData);
+      const result = await axios.post(
+        "http://localhost:5000/api/movies/",
+        postData
+      );
+      if (result.data) {
+        props.handleAddClick({ ...formValues, ...results });
+        setAddBtn(false);
+      } else {
+        handleNotification(`${postData.movieName} is already added.`);
+      }
     } catch (error) {
       console.error("Error creating movie:", error);
     }
+  };
+
+  const onFocusChange = (state) => {
+    setInputFocused(state);
   };
 
   return (
@@ -175,6 +201,9 @@ const Form = (props) => {
         label="Movie Name"
         value={formValues.mName}
         onInputChange={handleInputChange}
+        onFocusChange={onFocusChange}
+        keyPressed={props.keyPressed}
+        isKeyPressed={props.isKeyPressed}
       />
       <Button btnClicked={handleFindClick} content="Find" />
       {addBtn && <Button btnClicked={handleAddClick} content="Add" />}

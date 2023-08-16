@@ -7,7 +7,7 @@ const Notifications = (props) => {
   return (
     <div
       id="toast-top-right"
-      className="fixed space-y-2 w-full max-w-xs top-5 right-5"
+      className="fixed z-50 space-y-2 w-full max-w-xs top-5 right-5"
       role="alert"
     >
       {notifications.map((notification) => {

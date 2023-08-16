@@ -24,6 +24,7 @@ const GallerySection = (props) => {
             { actorName: data[i].actors[2], character: data[i].characters[2] },
           ];
           newData.push({
+            mId: data[i].movieId,
             mName: data[i].movieName,
             date: data[i].releaseDate,
             poster: data[i].posterPath,
@@ -56,6 +57,19 @@ const GallerySection = (props) => {
     });
   }, [movieInfo]);
 
+  const handleNotification = (content) => {
+    props.notification(content);
+  };
+
+  const deleteSignal = (movieId) => {
+    setMovies(
+      movies.filter((movie) => {
+        console.log(movie.mId, movieId);
+        if (movie.mId !== movieId) return movie;
+      })
+    );
+  };
+
   //Filtering the empty entries
   return (
     <div className="w-full h-screen pb-32 flex flex-wrap p-8 gap-6 content-start overflow-y-scroll">
@@ -72,6 +86,9 @@ const GallerySection = (props) => {
               releaseDate={movie.date}
               acting={movie[0]}
               directing={movie[1]}
+              movieId={movie.mId}
+              notification={handleNotification}
+              deleteSignal={deleteSignal}
             />
           );
         })}
