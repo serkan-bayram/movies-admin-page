@@ -1,4 +1,4 @@
-# movies-admin-page
+# Movies Admin Page
 
 > Practicing MERN skills
 
